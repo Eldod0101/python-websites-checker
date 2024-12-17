@@ -16,12 +16,12 @@
 
     استخدم السكربت التالي بشكل منفرد لاسترداد chat_id:
 
-import requests
-
-token = 'YOUR_BOT_TOKEN'
-url = f"https://api.telegram.org/bot{token}/getUpdates"
-response = requests.get(url)
-print(response.json())
+    import requests
+    
+    token = 'YOUR_BOT_TOKEN'
+    url = f"https://api.telegram.org/bot{token}/getUpdates"
+    response = requests.get(url)
+    print(response.json())
 بعد تشغيل السكربت، ستتمكن من العثور على chat_id في الاستجابة.
 
 . إعداد السكربت:
