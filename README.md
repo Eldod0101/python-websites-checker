@@ -1,82 +1,105 @@
-# Website Monitor Bot
+# Website Monitor with Telegram Alerts
 
-## الغرض من الاسكريبت
-اسكربت Python هذا يتيح لك مراقبة حالة المواقع بشكل دوري باستخدام **Telegram Bot** لإرسال تنبيهات في حال حدوث أي خطأ في الموقع (مثل انقطاع الاتصال أو أخطاء الخادم). 
-يتم التحقق من حالة الموقع بشكل دوري، وإذا كان هناك مشكلة في الاتصال أو الرد من الخادم، سيتم إرسال تنبيه إلى قناة Telegram أو إلى المستخدم عبر البوت.
+## Introduction
 
-### خطوات التثبيت
-1. الحصول على توكن البوت:
+This script monitors a list of websites at regular intervals and sends Telegram alerts for any errors such as site downtime or bad status codes. It is designed to be simple and flexible for personal or educational use.
 
-    قم بإنشاء Telegram Bot من خلال BotFather للحصول على التوكن.
-    بعد الحصول على التوكن، احتفظ به في مكان آمن لأنه ستحتاجه لاستخدام البوت.
+## Features
 
-2. الحصول على معرف الدردشة (Chat ID):
+- Monitors multiple websites at customizable intervals.
+- Sends Telegram alerts for errors like site down or incorrect status codes.
+- Handles exceptions such as connection errors, timeouts, and too many redirects.
+- Easy configuration for Telegram bot token and chat ID.
 
-    قم بإرسال أي رسالة إلى البوت الخاص بك.
+## Prerequisites
 
-    استخدم السكربت التالي بشكل منفرد لاسترداد chat_id:
+- Python 3.x installed on your system.
+- Required Python packages: `requests`, `asyncio`, `telegram`.
 
-    import requests
-    
-    token = 'YOUR_BOT_TOKEN'
-    url = f"https://api.telegram.org/bot{token}/getUpdates"
-    response = requests.get(url)
-    print(response.json())
-بعد تشغيل السكربت، ستتمكن من العثور على chat_id في الاستجابة.
+## Installation
 
-. إعداد السكربت:
+1. **Install Dependencies**:
 
-    قم بنسخ السكربت إلى جهازك.
-    افتح السكربت وأدخل BOT_TOKEN و CHAT_ID في الأماكن المحددة:
+   ```bash
+   pip install requests telegram
+   ```
 
-    BOT_TOKEN = 'YOUR_BOT_TOKEN'  # استبدل بهذا التوكن الخاص بك
-    CHAT_ID = 'YOUR_CHAT_ID'  # استبدل بهذا معرف الدردشة الخاص بك
+2. **Ensure Python 3.x is installed** on your system.
 
-4. تشغيل السكربت:
+## Configuration
 
-    بعد تعديل السكربت، يمكنك تشغيله باستخدام الأمر التالي:
+1. **Obtain Telegram Bot Token**:
 
-    python script_name.py
+   - Create a bot using [@BotFather](https://core.telegram.org/bots#6-botfather) on Telegram.
+   - Retrieve your bot token from BotFather.
 
-5. مراقبة المواقع:
+2. **Get Your Chat ID**:
 
-    يمكنك تحديد قائمة المواقع التي ترغب في مراقبتها. كل موقع يتم التحقق من حالته بشكل دوري، وإذا حدثت مشكلة، سيتم إرسال تنبيه عبر Telegram Bot.
-    لإضافة مواقع جديدة للمراقبة، قم بإضافتها إلى قائمة websites في السكربت:
+   - Send a message to your bot.
+   - Use the following script to retrieve your chat ID:
 
-    websites = [
-        "https://www.example.com",
-        "https://www.anotherwebsite.com"
-    ]
+     ```python
+     from telegram import Bot
 
-كيف يعمل السكربت؟
+     bot = Bot(token='YOUR_BOT_TOKEN')
+     updates = bot.get_updates()
+     for update in updates:
+         print(update.message.chat.id)
+     ```
 
-    التحقق من حالة المواقع:
-        يقوم السكربت بمحاولة الوصول إلى المواقع باستخدام HEAD request لتجنب تحميل المحتوى بالكامل، فقط للتحقق من حالة الموقع.
-        إذا كانت الاستجابة غير صحيحة أو إذا حدث خطأ في الاتصال، يتم إرسال تنبيه عبر Telegram Bot.
+3. **Replace Placeholder Values**:
 
-    إرسال التنبيهات عبر Telegram:
-        في حال حدوث أي مشكلة مع أحد المواقع، يقوم السكربت بإرسال رسالة إلى chat_id المحدد.
-        الرسائل تتضمن معلومات الموقع، نوع الخطأ، والوقت الذي حدث فيه الخطأ.
+   - Open the script and replace `'YOUR_BOT_TOKEN'` and `'YOUR_CHAT_ID'` with your actual bot token and chat ID.
 
-ملاحظات:
-    يعمل السكربت بشكل دوري ويكرر العملية بناءً على الفاصل الزمني الذي تحدده (افتراضيًا 600 ثانية).
-    يتم التعامل مع الأخطاء مثل ConnectionError و Timeout و TooManyRedirects وإرسال تنبيهات مفصلة حول السبب.
+## Usage
 
-    ## المتطلبات
-- **Python 3.6 أو أحدث**
-- **مكتبة requests**: لتحميل المواقع والتحقق من استجابتها.
-- **مكتبة python-telegram-bot**: لإرسال التنبيهات عبر Telegram.
+1. **Run the Script**:
 
-### تثبيت المكتبات المطلوبة:
-تأكد من أنك قمت بتثبيت المكتبات التالية باستخدام `pip`:
+   ```bash
+   python script_name.py
+   ```
 
-```bash
-pip install requests python-telegram-bot
+2. **Modify Parameters** (Optional):
 
+   - Update the `websites` list with your target websites.
+   - Adjust the `interval` parameter to change the check frequency.
 
-دعم
-إذا واجهت أي مشاكل أو كانت لديك أسئلة، يمكنك فتح Issue هنا على GitHub أو الاتصال بي مباشرة عبر البريد الإلكتروني abdelrhman0mahmoud1@gmail.com.
+   Example:
 
-المساهمة
-إذا كنت ترغب في المساهمة في تطوير السكربت، يمكنك عمل Fork لهذا المستودع، ثم تقديم Pull Request مع التعديلات التي ترغب في إضافتها.
+   ```python
+   monitor.check_website_status(websites, interval=600)
+   ```
 
+   This checks every 10 minutes.
+
+## Error Handling
+
+- The script catches exceptions such as `ConnectionError`, `Timeout`, `TooManyRedirects`, and others.
+- Sends a Telegram alert with the error message and timestamp.
+- Note: Rate limiting to prevent spam is not currently implemented but could be added.
+
+## Stopping the Monitor
+
+- Press `Ctrl+C` in the terminal to stop the script.
+
+## Known Issues/Limitations
+
+- No rate limiting for alerts.
+- Ensure internet connectivity for accurate monitoring.
+
+## Contributing
+
+- Contributions are welcome! Fork the repository, make changes, and submit a pull request.
+- Please adhere to the existing code style and add comments for clarity.
+
+## License
+
+- This script is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- Special thanks to the maintainers of the `requests` and `telegram` libraries.
+
+## Contact
+
+- For questions or feedback, please open an issue or contact the script author.
