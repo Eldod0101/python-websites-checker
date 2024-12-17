@@ -15,7 +15,7 @@
 ```bash
 pip install requests python-telegram-bot
 
-خطوات التثبيت
+### خطوات التثبيت
 1. الحصول على توكن البوت:
 
     قم بإنشاء Telegram Bot من خلال BotFather للحصول على التوكن.
